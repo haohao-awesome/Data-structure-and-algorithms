@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 什么是双端队列,纯队列是指插入只能在队尾,删除只能在队首,而双端队列在队首和队尾都可以进行插入和删除 
+
+        //队首的访问:Queue.peek,队首的删除:Queue.exitQueue,队首的插入分三种情况,
+        /*  (1)第一种情况是队列为空的时候,相当于队列的插入Queue.enterQueue
+         (2)第二种情况是lowestCount>=1的时候,就将lowestCount-1作键,并将新元素的值与键对应
+         (3)第三种情况是lowestCount=0的时候,这时候将键设为负值  */
+
+        //队尾的访问:Stack.peek,队尾的删除:Stack.pop,队尾的插入:Queue.enterQueue
+        class DoubleQueue {
+            constructor() {
+                this.count = 0;
+                this.lowestCount = 0;
+                this.items = {};
+            }
+            size() {
+                return this.count - this.lowestCount;
+            }
+            isEmpty() {
+                return this.size() === 0;
+            }
+            // 队首访问
+            peekFront() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.lowestCount];
+            }
+            //队首删除
+            removeFront() {
+                if (this.isEepty()) {
+                    return undefined;
+                }
+                const resultFront = this.items[this.lowestCount];
+                delete this.items[this.lowestCount];
+                this.lowestCount++;
+                return resultFront;
+            }
+            //队首插入
+            addFront(element) {
+                // if (this.isEmpty()) {
+                //     this.addBack(element);
+                // } else if (this.lowestCount>0) {
+                //     this.lowestCount--;
+                //     this.items[this.lowestCount]=element;
+                // }else{//当第一个元素的索引为零时
+                //     for(let i=this.count;i>0;i--)
+                //     {
+                //         this.items[i]=this.items[i-1];
+                //     }
+                //     this.count++;
+                //     this.lowestCount=0
+
+                // }
+                if (this.isEmpty()) {
+                    this.addBack(element);
+
+                } else {
+                    this.lowestCount--;
+                    this.items[this.lowestCount] = element;
+                }
+            }
+            //队尾访问
+            peekBack() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.count - 1];
+            }
+            //队尾删除(出栈)
+            removeBack() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                this.count--;
+                const resultBack = this.items[this.count];
+                delete this.items[this.count];
+                return resultBack;
+            }
+            //队尾插入
+            addBack(element) {
+                this.items[this.count] = element;
+                this.count++;
+            }
+            //打印双端队列
+            toString() {
+                let str = `${this.items[this.lowestCount]}`;
+                for (let i = this.lowestCount + 1; i < this.count; i++) {
+                    str = `${str},${this.items[i]}`;
+                }
+                return str;
+            }
+        }
+        const dq = new DoubleQueue();
+        dq.addFront(1);
+        dq.addFront(2);
+        dq.addBack(3);
+        console.log(dq.size());
+        console.log(dq.toString()); 
+    </script>
+</body>
+
+</html>

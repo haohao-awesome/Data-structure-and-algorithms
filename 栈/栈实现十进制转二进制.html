@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //创建栈
+        class Stack {
+            constructor() {
+                this.count = 0;//栈的大小
+                this.items = {};//对象来充当栈,对象是键值对
+            }
+            //栈的大小
+            size() {
+                return this.count;
+            }
+            //检查栈是否为空
+            isEmpty() {
+                return this.count === 0;
+            }
+            //入栈
+            push(element) {
+                this.items[this.count] = element;
+                this.count++;
+            }
+            //出栈
+            pop() {
+                //这里添加this
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                this.count--;//因为每次入栈了之后都++
+                const result = this.items[this.count];
+                delete this.items[this.count];//删除这个元素
+                return result;
+            }
+            //查看栈顶元素
+            peek() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.count - 1];
+            }
+            //清空栈
+            clear() {
+                while (!this.isEmpty()) {
+                    this.pop();
+                }
+            }
+            //打印栈 
+            toString() {
+                if (this.isEmpty()) {
+                    return '';
+                }
+                let objString = `${this.items[0]}`;
+                for (let i = 1; i < this.count; i++) {
+                    //字符串插值
+                    objString = `${objString},${this.items[i]}`;
+                }
+                return objString;
+            }
+        }
+        // 10/2=5...0, 5/2=2...1 , 2/2=1...0 ,1/2=0...1(0101入栈,1010出栈)
+        //十进制转二进制
+        function decimalToBinary(decNumber) {
+            const remStack = new Stack();//实例化一个栈,用来存放余数
+            let binaryString = '';//用来
+            let number = decNumber;//商
+            let rem;//余数(出入栈)
+
+            while (number > 0) { // {1}
+                // rem = Math.floor(number % 2);
+                rem = number % 2;
+                remStack.push(rem); // 入栈
+                number = Math.floor(number / 2); // Math.floor()向下四舍五入最接近的整数
+            }
+            //将栈中的余数转化为字符
+            while (!remStack.isEmpty()) { // {5}
+                binaryString += remStack.pop();
+            }
+            return binaryString;
+        }
+        console.log(decimalToBinary(24));
+    </script>
+</body>
+
+</html>

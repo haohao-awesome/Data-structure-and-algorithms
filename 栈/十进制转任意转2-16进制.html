@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Stack {
+            constructor() {
+                this.count = 0;//栈的大小
+                this.items = {};//对象来充当栈,对象是键值对
+            }
+            //栈的大小
+            size() {
+                return this.count;
+            }
+            //检查栈是否为空
+            isEmpty() {
+                return this.count === 0;
+            }
+            //入栈
+            push(element) {
+                this.items[this.count] = element;
+                this.count++;
+            }
+            //出栈
+            pop() {
+                //这里添加this
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                this.count--;//因为每次入栈了之后都++
+                const result = this.items[this.count];
+                delete this.items[this.count];//删除这个元素
+                return result;
+            }
+            //查看栈顶元素
+            peek() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.count - 1];
+            }
+            //清空栈
+            clear() {
+                while (!this.isEmpty()) {
+                    this.pop();
+                }
+            }
+            //打印栈 
+            toString() {
+                if (this.isEmpty()) {
+                    return '';
+                }
+                let objString = `${this.items[0]}`;
+                for (let i = 1; i < this.count; i++) {
+                    //字符串插值
+                    objString = `${objString},${this.items[i]}`;
+                }
+                return objString;
+            }
+        }
+        // 转换函数
+        function toAnyBase(target, base) {
+            let remStack = new Stack();
+            const str = "0123456789ABCDEF";
+            let result = '';
+            do {
+                remStack.push(target % base);
+                target = Math.floor(target / base);
+            } while (target > 0)
+            while (!remStack.isEmpty()) {
+                //将余数抓换为字母,字符串加括号
+                result += str[remStack.pop()];
+            }
+            return result;
+        }
+        console.log(toAnyBase(100, 8));
+    </script>
+</body>
+
+</html>

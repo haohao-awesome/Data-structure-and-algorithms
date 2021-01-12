@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 单向链表节点类
+        class Node {
+            constructor(element) {
+                //一个用来保存节点的值
+                this.element = element;
+                //一个用来保存下一个节点的指针
+                this.next = null;
+            }
+        }
+        //单向链表类
+        class LinkedList {
+            constructor() {
+                this.head = null;//链表头元素的引用
+                this.count = 0;//链表长度
+            }
+            //链表长度
+            size() {
+                return this.count;
+            }
+            // 链表是否为空
+            isEemty() {
+                return this.size() === 0;
+            }
+            //链表头结点
+            getHead() {
+                return this.head;
+            }
+            //打印链表
+            toString() {
+                let str = '';
+                if (this.isEemty()) {
+                    return str;
+                }
+                let current = this.head;
+                let next;
+
+                // for (let i = 1; i < this.count; i++) {
+                //     current = current.next;
+                //     str = `[element:${str},${current.element}]`;
+
+                // }
+                while (current) {
+                    next = current.next;
+                    next = next ? next.element : 'null';
+                    str += `[element:${current.element},next:${next}]`;
+                    current = current.next;
+                }
+                return str;
+            }
+            //根据节点的element来返回位置,找不到返回-1
+            indexOf(element) {
+                if (!this.isEemty()) {
+                    let current = this.head;
+                    for (let i = 0; i < this.count; i++) {
+                        if (element === current.element) {
+                            return i;
+                        }
+                        //不相等继续迭代
+                        current = current.next;
+                    }
+                }
+                return -1;
+            }
+            //根据节点索引,获取节点
+            getNodeAt(index) {
+                //检查index合法性
+                if (index >= 0 && index < this.count) {
+                    let current = this.head;
+                    //迭代到index
+                    for (let i = 0; i < index; i++) {
+                        //改变current的指向,直到index
+                        current = current.next;
+
+                    }
+                    return current;
+                }
+                console.log(`index的值要在0到${this.count - 1}之间`);
+            }
+            //链表尾部添加元素
+            push(element) {
+                //实例化节点元素
+                const node = new Node(element);
+                //当前指向的节点
+                let current;
+                // 链表为空的时候
+                if (this.head === null) {
+                    this.head = node;
+                } else {
+                    //链表不为空,因为我们只知道head的指向,只能从head开始才能走到尽头
+                    current = this.head;
+                    // while (current.next !== null) {
+                    //     current = current.next;
+                    // }
+
+                    //根据最后一个元素的索引来得到最后一个元素
+                    current = this.getNodeAt(this.count - 1);
+                    current.next = node;
+                }
+                //递增链表长度
+                this.count++;
+            }
+            //任意插入元素
+            insert(element, index) {
+                if (index >= 0 && index < this.count) {
+                    let node = new Node(element);
+                    if (index === 0) {
+                        node.next = this.head;
+                        this.head = node;
+                    } else {
+                        //中间或者尾部插入
+                        // 得到要插入位置的前一个节点
+                        let previous = this.getNodeAt(index - 1);
+                        // 将新节点与前一个节点的指向同一个节点
+                        node.next = previous.next;
+                        //将前一个节点指向新节点
+                        previous.next = node;
+                    }
+                    this.count++;
+                    console.log('插入成功');
+                } else {
+                    console.log('插入失败');
+                }
+
+            }
+
+            //根据节点的索引来删除节点
+            removeAt(index) {
+                //检查是否越界,最后一个节点的索引是this.count-1,也可以用1来表示第一个节点的索引,最后一个节点的索引就是this.count
+                if (index >= 0 && index < this.count) {
+                    let current = this.head;
+                    //移除链表第一个节点,我们用索引0来代表第一个节点
+                    if (index === 0) {
+                        this.head = current.next;
+                    } else {
+
+                        let previous = this.getNodeAt(index - 1);
+                        current = previous.next;
+                        previous.next = current.next;
+                    }
+                    this.count--;
+                    return current.element;
+                } else {
+                    console.log('越界');
+                }
+
+            }
+
+            remove(element) {
+                const index = this.indexOf(element);
+                return this.removeAt(index);
+
+            }
+
+        }
+        //双向链表节点类
+        class DoublyNode extends Node {
+            constructor(element) {
+                super(element);
+                this.prev = null;
+            }
+        }
+        //双向链表类
+        class DoublyLinkedList extends LinkedList {
+            constructor() {
+                super();
+                this.tail = null;//尾指针
+            }
+            //重写getNodeAt
+            getNodeAt(index) {
+                if (this.isEemty()) {
+                    console.log('链表为空,请先添加节点');
+                    return null;
+                }
+                //父类的getNodeAt是从头指针开始遍历,但是双向链表既有头指针,又有尾指针
+                //可以根据index和this.count/2的关系来判断从哪边开始遍历,会更快访问到节点
+                if (index >= 0 && index < this.count) {
+
+                    //从前往后遍历,因为父类就是从前往后调用,我们可以调用父类的方法,不需要再写
+
+                    // if(index<Math.floor(this.count/2)){
+                    //     for(let i=0;i<index;i++){
+
+                    //     }
+                    // }
+                    if (index > Math.floor(this.count / 2)) {
+                        let current = this.tail;
+                        for (let i = this.count - 1; i > index; i--) {
+                            current = current.prev;
+                        }
+                        return current;
+                    } else {
+                        return super.getNodeAt(index);
+                    }
+                }
+                console.log('索引不合法');
+            }
+            //重写insert
+            insert(element, index) {
+                if (index < 0 || index > this.count) {
+                    return false;//索引不合法,插入失败
+                } else {
+                    let node = new DoublyNode(element);
+                    if (index === 0) {
+                        //头部插入
+                        if (this.isEemty()) {
+                            this.head = node;
+                            this.tail = node;
+                        } else {
+                            node.next = this.head;
+                            this.head.prev = node;
+                            this.head = node;
+                        }
+                    } else if (index === this.count) {
+                        //尾部插入
+                        node.prev = this.tail;
+                        this.tail.next = node;
+                        this.tail = node;
+
+                    } else {
+                        //中间插入
+                        let current = this.getNodeAt(index);
+                        let previous = current.prev;
+                        //先修改新增节点
+                        node.next = current;
+                        node.prev = previous;
+
+                        //再修改前后节点
+                        previous.next = node;
+                        current.prev = node;
+                    }
+                    this.count++;
+                }
+                return true;
+            }
+            //重写removeAt
+            removeAt(index) {
+                if (index < 0 && index >= this.count || this.isEemty()) {
+                    return false;
+                } else {
+                    let current;
+                    let previous;
+                    if (index === 0) {
+                        this.head = this.head.next;
+                        //将头节点的prev指向空
+
+                        if (this.count === 1) {
+                            this.tail = null;
+                            //此时this.head也等于null,
+                        } else {
+                            this.head.prev = null;
+                        }
+                        //用上面的逻辑还是下面的逻辑,记住head是头指针,头指针保存的是对第一个元素的引用,是没有prev的
+
+                        /*  this.head=this.head.next;
+                         this.head.prev=null;
+                         if(this.count===1){
+                             this.tail=null;
+                         } */
+                    } else if (index = this.count - 1) {
+                        current = this.tail;
+                        this.tail = current.prev;
+                        this.tail.next = null;
+
+                        // this.tail=this.tail.prev;
+                        // this.tail.next=null;
+
+                    } else {
+                        current = this.getNodeAt(index);
+                        previous = current.prev;
+                        previous.next = current.next;
+                        current.next.prev = previous;
+                    }
+
+                }
+                this.count--;
+                return current.element;
+            }
+        }
+        let doublyLinkedList = new DoublyLinkedList();
+        doublyLinkedList.insert(1, 0);
+        doublyLinkedList.insert(2, 1);
+        doublyLinkedList.insert(3, 2);
+        doublyLinkedList.insert(4, 2);
+        console.log(doublyLinkedList.toString());
+    </script>
+</body>
+
+</html>

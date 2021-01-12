@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //Weak
+        const items = new WeakMap();
+        class Stack {
+            constructor() {
+                this.count = 0;
+                items.set(this, {});//实例对象做键,值为对象,用来保存栈中的元素
+            }
+            //栈的大小
+            size() {
+                return this.count;
+            }
+            //检查栈是否为空
+            isEmpty() {
+                return this.count === 0;
+            }
+            //入栈
+            push(element) {
+                items.get(this)[this.count] = element;
+                this.count++;
+            }
+            //出栈
+            pop() {
+                //这里添加this
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                this.count--;//因为每次入栈了之后都++
+                const result = items.get(this)[this.count];
+                delete items.get(this)[this.count];//删除这个元素
+                return result;
+            }
+            //查看栈顶元素
+            peek() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return items.get(this)[this.count - 1];
+            }
+            //清空栈
+            clear() {
+                while (!this.isEmpty()) {
+                    this.pop();
+                }
+            }
+            //打印栈 
+            toString() {
+                if (this.isEmpty()) {
+                    return '';
+                }
+                let objString = `${items.get(this)[0]}`;
+                for (let i = 1; i < this.count; i++) {
+                    //字符串插值
+                    objString = `${objString},${items.get(this)[i]}`;
+                }
+                return objString;
+            }
+        }
+        const stack = new Stack();
+        stack.push(1);
+        stack.push(2);
+        console.log(stack.toString());
+    </script>
+</body>
+
+</html>

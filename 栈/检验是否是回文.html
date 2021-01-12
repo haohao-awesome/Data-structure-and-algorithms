@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        class Stack {
+            constructor() {
+                this.count = 0;//栈的大小
+                this.items = {};//对象来充当栈,对象是键值对
+            }
+            //栈的大小
+            size() {
+                return this.count;
+            }
+            //检查栈是否为空
+            isEmpty() {
+                return this.count === 0;
+            }
+            //入栈
+            push(element) {
+                this.items[this.count] = element;
+                this.count++;
+            }
+            //出栈
+            pop() {
+                //这里添加this
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                this.count--;//因为每次入栈了之后都++
+                const result = this.items[this.count];
+                delete this.items[this.count];//删除这个元素
+                return result;
+            }
+            //查看栈顶元素
+            peek() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.count - 1];
+            }
+            //清空栈
+            clear() {
+                while (!this.isEmpty()) {
+                    this.pop();
+                }
+            }
+            //打印栈 
+            toString() {
+                if (this.isEmpty()) {
+                    return '';
+                }
+                let objString = `${this.items[0]}`;
+                for (let i = 1; i < this.count; i++) {
+                    //字符串插值
+                    objString = `${objString},${this.items[i]}`;
+                }
+                return objString;
+            }
+        }
+        //判断是否是回文的函数 racecar 后进先出
+        function isHuiWen(word) {
+            const stack = new Stack();
+            let str = '';
+            for (let i = 0; i < word.length; i++) {
+                stack.push(word[i]);
+            }
+            //count在变化
+            // for (let i = 0; i < stack.count; i++) {
+            //     str += stack.pop();
+            // }
+            while (!stack.isEmpty()) {
+                str = `${str}${stack.pop()}`;
+            }
+            console.log(str);
+            if (str === word) {
+                console.log(`${word}是回文`);
+            } else {
+                console.log(`${word}不是回文`);
+            }
+        }
+
+        isHuiWen('madam');
+
+
+
+    </script>
+</body>
+
+</html>

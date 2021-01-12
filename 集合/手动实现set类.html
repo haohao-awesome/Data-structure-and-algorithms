@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Set {
+            constructor() {
+                this.items = {};
+            }
+            //判断元素是否在集合中
+            has(element) {
+                return Object.prototype.hasOwnProperty.call(this.items, element);
+            }
+            //添加元素
+            add(element) {
+                if (!this.has(element)) {
+                    //属性名和属性值同为element
+                    this.items[element] = element;
+                    return true;
+                }
+                return false;
+            }
+            //删除元素
+            delete(element) {
+                if (this.has(element)) {
+                    delete this.items[element];//delete运算符
+                    return true;
+                }
+                return false;
+            }
+            //清空集合
+            clear() {
+                this.items = {};
+            }
+            //集合尺寸
+            //第一种是在constructor中给一个length属性，调用add和delete时进行控制
+            size() {
+                let count = 0;
+                for (let key in this.items) {
+                    //items中的属性不仅只有数据结构中的属性，还有其他的属性
+                    if (this.items.hasOwnProperty(key)) {
+                        count++;
+                    }
+                }
+                return count;
+            }
+            values() {
+                let values = [];
+                for (let key in this.items) {
+                    if (this.items.hasOwnProperty(key)) {
+                        values.push(this.items[key]);
+                    }
+                }
+                return values;
+            }
+            //并集
+            union(otherSet) {
+                let unionSet = new Set();
+
+                let values = this.values();
+                //使用forEach迭代
+                // values.forEach(value => unionSet.add(value));
+                // values = otherSet.values();
+                // values.forEach(value => unionSet.add(value));
+                for (let i = 0; i < values.length; i++) {
+                    unionSet.add(values[i]);
+                }
+                values = otherSet.values();
+                for (let i = 0; i < values.length; i++) {
+                    unionSet.add(values[i]);
+                }
+                return unionSet;
+            }
+            // 交集
+            /*  intersection(otherSet){
+                 let intersectionSet=new Set();
+                 let values=this.values;
+                 for(let i=0;i<values.length;i++){
+                     if(otherSet.has(values[i])){//检查另一个集合中是否也存在该元素
+                         intersectionSet.add(values[i]);
+                     }
+                 }
+                 return intersectionSet;
+             } */
+            //交集优化:迭代元素较少的集合
+            intersection(otherSet) {
+                let intersectionSet = new Set();
+                let values = this.values();
+                let otherValues = otherSet.values();
+                if (values.length < otherValues.length) {
+                    values.forEach(value => {
+                        if (otherValues.includes(value)) {
+                            intersectionSet.add(value);
+                        }
+                    });
+                } else {
+                    otherValues.forEach(value => {
+                        if (values.includes(value)) {
+                            intersectionSet.add(value);
+                        }
+                    });
+                }
+                return intersectionSet;
+            }
+            //差集
+            difference(otherSet) {
+                let differenceSet = new Set();
+                let values = this.values();
+                values.forEach(value => {
+                    if (!otherSet.has(value)) {
+                        differenceSet.add(value);
+                    }
+                });
+                return differenceSet;
+            }
+            //子集
+            isSubsetOf(otherSet) {
+                if (this.size() > otherSet.size()) {
+                    return false;
+                }
+                //遍历子集的所有元素
+                let values = this.values();
+                for (let i = 0; i < values.length; i++) {
+                    if (!otherSet.has(values[i])) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        let setA = new Set();
+        setA.add(1);
+        setA.add(2);
+
+        let setB = new Set();
+        setB.add(1);
+        setB.add(4);
+        setB.add(2);
+        console.log(setA.union(setB));
+        console.log(setA.intersection(setB));
+        console.log(setA.difference(setB));
+        console.log(setA.isSubsetOf(setB));
+
+    </script>
+</body>
+
+</html>

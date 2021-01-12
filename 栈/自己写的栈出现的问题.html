@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Stack {
+            constructor() {
+                this.count = 0;
+                this.items = {};
+            }
+            //入栈
+            push(element) {
+                this.items[this.count] = element;
+                this.count++;
+            }
+            //出栈
+            pop() {
+                //忘记检查是否为空了
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                this.count--;
+                const result = this.items[this.count];
+                //删除元素 忘记写了
+                delete this.items[this.count];
+                return result;
+
+            }
+            isEmpty() {
+                return this.count === 0;
+            }
+            peek() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.count - 1];
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Queue {
+            constructor() {
+                this.count = 0;//记录下一个队列元素的索引
+                this.lowestCount = 0;//队列中第一个元素索引
+                this.items = {};//用对象来保存队列
+            }
+            //队列大小
+            size() {
+                return this.count - this.lowestCount;
+            }
+            //检查队列是否为空
+            isEmpty() {
+                return this.size() === 0;
+            }
+            // 入队,从队尾插入
+            enterQueue(element) {
+                this.items[this.count] = element;
+                this.count++;
+            }
+            //出队,队头移除
+            exitQueue() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                const exitValue = this.items[this.lowestCount];
+                delete this.items[this.lowestCount];
+                this.lowestCount++;
+                return exitValue;
+            }
+            //访问队首元素
+            peek() {
+                if (this.isEmpty()) {
+                    return undefined;
+                }
+                return this.items[this.lowestCount];
+            }
+            //将队列转换为字符串格式
+            toString() {
+                if (this.isEmpty()) {
+                    return undefind;
+                }
+                let str = `${this.items[this.lowestCount]}`;
+                for (let i = this.lowestCount + 1; i < this.count; i++) {
+                    str = `${str},${this.items[i]}`;//将字符以逗号分隔
+                }
+                return str;
+            }
+        }
+        function hotPotato(elements, num) {
+            const queue = new Queue();
+            let outPerson = [];
+            //栈初始化
+            for (let i = 0; i < elements.length; i++) {
+                queue.enterQueue(elements[i]);
+            }
+
+            while (queue.size() > 1) {
+                for (let i = 0; i < num; i++) {
+                    //将队首元素加到队尾,以便开始新的一轮
+                    queue.enterQueue(queue.exitQueue());
+                }
+                // 到达了num后,本轮结束,此时的那个人就是淘汰的人
+                outPerson.push(queue.exitQueue());
+            }
+            //此时栈中只剩下了一个人,他就是赢家
+            return { out: outPerson, winner: queue.peek() }
+        }
+        const result = hotPotato(['金', '木', '水', '火', '土'], 3);
+        // 遍历数组,并对每一项执行传入的函数
+        result.out.forEach(name => { console.log(`${name}在游戏中被淘汰了`); });
+        console.log(`胜利者为:${result.winner}`); 
+    </script>
+</body>
+
+</html>
