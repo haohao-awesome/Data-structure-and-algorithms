@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let Compare = {
+            LESS_THAN: -1,
+            BIGGER_THAN: 1,
+            EQUALS: 0
+        }
+        function swap(arr, a, b) {
+            let temp = arr[a];
+            arr[a] = arr[b];
+            arr[b] = temp;
+        }
+        function defaultCompare(a, b) {
+            if (a === b) {
+                return Compare.EQUALS;
+            }
+            return a < b ? Compare.LESS_THAN : Compare.BIGGER_THAN;
+        }
+        function heapSort(array, compareFn = defaultCompare) {
+            let heapSize = array.length;
+            // 建立一个最大堆
+            buildMaxHeap(array, compareFn);
+
+            while (heapSize > 1) {
+                // 将堆中最后一个元素与第一个元素交换，并将堆的大小减一
+                swap(array, 0, --heapSize);
+                //保持堆的结构
+                heapify(array, 0, heapSize, compareFn);
+            }
+            return array;
+        }
+        function buildMaxHeap(array, compareFn) {
+            for (let i = Math.floor(array.length / 2); i >= 0; i -= 1) {
+                heapify(array, i, array.length, compareFn);
+                return array;
+            }
+        }
+        //保持堆结构
+        function heapify(array, index, heapSize, compareFn) {
+            let largestIndex = index;
+            let left = 2 * index + 1;
+            let right = 2 * index + 2;
+            //左子节点大于父节点
+            if (left < heapSize && compareFn(array[left], array[index] === Compare.BIGGER_THAN)) {
+                largestIndex = left;
+            }
+            //右子节点大于左节点
+            if (right < heapSize && compareFn(array[right], array[largestIndex]) === Compare.BIGGER_THAN) {
+                largestIndex = right;
+            }
+            if (largestIndex != index) {
+                swap(array, index, largestIndex);
+                heapify(array, largestIndex, heapSize, compareFn);
+            }
+        }
+        const array = [7, 6, 3, 5, 4, 1, 2];
+        console.log('Before sorting: ', array);
+        console.log('After sorting: ', heapSort(array));
+    </script>
+</body>
+
+</html>
