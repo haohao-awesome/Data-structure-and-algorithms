@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        import { graph, myVertices } from './UsingGraphs.js';
+        import { BFS } from './breadthFirstSearch.js';
+        let shortestPathA = BFS(graph, myVertices[0]);
+        console.log(shortestPathA);
+    </script>
+</body>
+
+</html>

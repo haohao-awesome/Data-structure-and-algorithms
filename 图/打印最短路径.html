@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type='module'>
+        import { graph, myVertices } from './UsingGraphs.js';
+        import { BFS } from './breadthFirstSearch.js';
+        import Stack from './Stack.js';
+        let shortestPathA = BFS(graph, myVertices[0]);
+        let fromVertex = myVertices[0];
+        for (let i = 1; i < myVertices.length; i++) {
+            let toVertex = myVertices[i];
+            let path = new Stack();
+            for (let v = toVertex; v !== fromVertex; v = shortestPathA.predecessors[v]) {
+                path.push(v);
+            }
+            path.push(fromVertex);
+            let s = path.pop();
+            while (!path.isEmpty()) {
+                s += ' - ' + path.pop();
+            }
+            console.log(s);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        import { graph, myVertices } from './UsingGraphs.js';
+        import { breadthFirstSearch } from './breadthFirstSearch.js';
+        const printVertex = value => console.log('Visited vertex: ' + value);
+        breadthFirstSearch(graph, myVertices[0], printVertex);
+
+    </script>
+
+</body>
+
+</html>
