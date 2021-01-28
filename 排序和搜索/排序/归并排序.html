@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function mergeSort(array) {
+            // if (array.length > 1) {
+            //     let middle = Math.floor(array.length / 2);
+            //     //先分割
+            //     let left = mergeSort(array.slice(0, middle));
+            //     let right = mergeSort(array.slice(middle));
+            //     //再排序 并合并
+            //     array = merge(left, right);
+            // }
+
+            // return array;
+            if (array.length < 2) {
+                return array;
+            }
+            //分割
+            let middle = Math.floor(array.length / 2);
+            let left = mergeSort(array.slice(0, middle));
+            let right = mergeSort(array.slice(middle));
+            //排序 并合并
+            return merge(left, right);
+            //递归的体现：我们要解决一个大问题，可以把他分解为很多和它性质相同的小问题，我们解决最小的一个问题后，然后次小的问题自然就解决了，刚开始的大问题也就解决了
+        }
+        function merge(left, right) {
+            let i = 0;
+            let j = 0;
+            let result = [];
+            while (i < left.length && j < right.length) {
+                if (left[i] < right[j]) {
+                    result.push(left[i]);
+                    i++;
+                } else {
+                    result.push(right[j]);
+                    j++;
+                }
+            }
+            if (i < left.length) {
+                result = result.concat(left.slice(i));
+            } else {
+                result = result.concat(right.slice(j));
+            }
+
+            return result;
+        }
+        console.log(mergeSort([8, 7, 6, 5, 4, 3, 2, 1]));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function selectionSort(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                let indexMin = i;//每一轮开始寻找最小值之前，将这一轮开始的最小值所在的索引置为i
+                for (let j = i + 1; j < arr.length; j++) {
+                    //开始寻找最小值,要与后面从i+1到length-1的元素进行比较
+                    if (arr[indexMin] > arr[j]) {
+
+                        indexMin = j;
+                    }
+                }
+                if (indexMin != i) {
+                    [arr[indexMin], arr[i]] = [arr[i], arr[indexMin]];
+                }
+            }
+            return arr;
+        }
+
+        console.log(selectionSort([5, 4, 3, 2, 1]));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function insertionSort(arr) {
+            // for (let i = 1; i < arr.length; i++) {
+            //     let temp = arr[i];//要检验的元素
+            //     let j = i - 1;//已排好序的最后一个元素的索引
+            //     //与排好序的数组部分进行比较
+            //     while (j >= 0 && arr[j] > temp) {
+            //         arr[j + 1] = arr[j];
+            //         j--;
+            //     }
+            //     arr[j + 1] = temp;
+            // }
+            // return arr;
+            for (let i = 1; i < arr.length; i++) {
+                let j = i;
+                let temp = arr[i];
+                //比较arr[j-1]与temp大小
+                while (j > 0 && arr[j - 1] > temp) {
+                    arr[j] = arr[j - 1];//将元素后移
+                    j--;
+                }
+                arr[j] = temp;//将插入的值给到j
+            }
+            return arr;
+        }
+        console.log(insertionSort([3, 5, 1, 4, 2]));
+    </script>
+</body>
+
+</html>
