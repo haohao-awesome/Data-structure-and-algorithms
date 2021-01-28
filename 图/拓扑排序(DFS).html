@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type='module'>
+        import { result, myVertices } from './CreateDirectedGraph.js';
+        let fTimes = result.finished;
+        let s = '';
+        for (let count = 0; count < myVertices.length; count++) {
+            let max = 0;
+            let maxName = null;
+            for (let i = 0; i < myVertices.length; i++) {
+                if (fTimes[myVertices[i]] > max) {
+                    max = fTimes[myVertices[i]];
+                    maxName = myVertices[i];
+                }
+            }
+            if (count == 0) {
+                s = maxName;
+                delete fTimes[maxName];
+                continue;
+            }
+            s += ' - ' + maxName;
+            delete fTimes[maxName];
+        }
+        console.log(s);
+
+    </script>
+</body>
+
+</html>

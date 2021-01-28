@@ -9,11 +9,13 @@
 
 <body>
     <script type="module">
-        import { depthFirstSearch } from './depthFirstSearch.js';
-        import { graph } from './UsingGraphs.js';
+        import { graph, myVertices } from './UsingGraphs.js';
+        import { breadthFirstSearch } from './breadthFirstSearch.js';
         const printVertex = value => console.log('Visited vertex: ' + value);
-        depthFirstSearch(graph, printVertex);
+        breadthFirstSearch(graph, myVertices[0], printVertex);
+
     </script>
+
 </body>
 
 </html>
